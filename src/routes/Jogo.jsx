@@ -457,7 +457,7 @@ const Jogo = () => {
                         className="input-form"
                         id="usuario"
                         ref={usuario}
-                        placeholder="Usuário"
+                        placeholder="Usuário        Ex: Julia"
                       />
                     </label>
 
@@ -468,14 +468,14 @@ const Jogo = () => {
                         className="input-form"
                         id="senha"
                         ref={senha}
-                        placeholder="Senha"
+                        placeholder="Senha          Ex: 123"
                       />
                     </label>
                   </div>
 
                   <div className="login-btn">
                     <button className="btn btn-second" type="submit">
-                      Login
+                      Login 
                     </button>
                   </div>
 

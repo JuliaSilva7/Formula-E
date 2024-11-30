@@ -6,7 +6,7 @@ O objetivo é acumular pontos por meio de previsões sobre posições finais, pi
 
 ## 🌐 Acesse o jogo
 
-**[E-Masters — Jogar online](https://e-masters-three.vercel.app/equipes)**
+**[E-Masters — Jogar online](https://e-masters-three.vercel.app/home)**
 
 Acesse a aplicação e monte sua equipe para participar do desafio!
 
