@@ -1,14 +1,46 @@
-import { useState } from "react";
+
 import { PilotosStyle } from "../css/PilotosStyle";
-import equipes from "../../lista-pilotos.json";
+import pilotos from "../../lista-pilotos.json";
 import ModalEquipes from "../components/ModalPilotos";
 import Carrousel from "../components/Carrousel";
 
-const Pilotos = () => {
+// Carrega todas as imagens diretamente da pasta pilotos
+const arquivosImagem = import.meta.glob(
+  "../assets/img/pilotos/*",
   {
-    /*imagens para o carrousel - mapeando as imagens dos pilotos diretamente do JSON*/
+    eager: true,
+    query: "?url",
+    import: "default",
   }
-  let imagens = equipes.map(equipe => equipe.equipeImages[0]);
+);
+
+// Busca a imagem pelo nome do arquivo
+const obterImagem = (caminho) => {
+  const nomeArquivo = caminho.split("/").pop().toLowerCase();
+
+  const entrada = Object.entries(arquivosImagem).find(
+    ([arquivo]) => arquivo.split("/").pop().toLowerCase() === nomeArquivo
+  );
+
+  if (!entrada) {
+    console.error("Imagem de piloto não encontrada:", nomeArquivo);
+    return "";
+  }
+
+  return entrada[1];
+};
+
+const Pilotos = () => {
+  const pilotosComImagens = pilotos.map((piloto) => ({
+    ...piloto,
+    imagensProcessadas: piloto.equipeImages
+      .map((imagem) => obterImagem(imagem))
+      .filter(Boolean),
+  }));
+
+  const imagens = pilotosComImagens
+    .map((piloto) => piloto.imagensProcessadas[0])
+    .filter(Boolean);
 
   return (
     <PilotosStyle>
@@ -20,19 +52,26 @@ const Pilotos = () => {
 
       <section id="card-wrapper">
         <div className="box-area">
-          {equipes.map((equipe, index) => {
-            const { nameEquipe, descricao, equipeId, equipeImages, pontuacao,pontuacaoPorRodada } = equipe;
+          {pilotosComImagens.map((piloto) => {
+            const {
+              nameEquipe,
+              descricao,
+              pontuacao,
+              pontuacaoPorRodada,
+              imagensProcessadas,
+            } = piloto;
+
             return (
               <div className="box" key={nameEquipe}>
-                {/* Aqui, exibimos a primeira imagem da lista de imagens fornecidas no JSON */}
                 <img
-                  src={equipeImages[0]}  // Usando a primeira imagem do array equipeImages
+                  src={imagensProcessadas[0] || ""}
                   id="card-img"
-                  alt={`Imagem da equipe ${nameEquipe}`}
+                  alt={`Imagem do piloto ${nameEquipe}`}
                 />
 
                 <div className="texto">
                   <h3>{nameEquipe}</h3>
+
                   <button className="openPopupBtn">
                     Saiba mais sobre o piloto {nameEquipe}
                   </button>
@@ -43,7 +82,7 @@ const Pilotos = () => {
                     pontuacao={pontuacao}
                     pontuacaoPorRodada={pontuacaoPorRodada}
                     initialIsOpen={false}
-                    equipeImages={equipeImages}
+                    equipeImages={imagensProcessadas}
                   />
                 </div>
               </div>

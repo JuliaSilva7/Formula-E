@@ -1,20 +1,57 @@
-import { useState } from "react";
+
 import { EquipesStyle } from "../css/EquipesStyle";
 import equipes from "../../lista-equipes.json";
 import ModalEquipes from "../components/ModalEquipes";
 import Carrousel from "../components/Carrousel";
 
-const Equipes = () => {
+// Carrega todas as imagens das equipes
+const arquivosImagem = import.meta.glob(
+  "../assets/img/equipes/**/*",
   {
-    /*imagens para o carrousel*/
+    eager: true,
+    query: "?url",
+    import: "default",
   }
-  let imagens = [
-    "src/assets/img/equipes/ds/ds5.jpg",
-    "src/assets/img/equipes/mahindra/mahindra4.webp",
-    "src/assets/img/equipes/maserati/maserati.jpg",
-    "src/assets/img/equipes/mclaren/mclaren.jpg",
-    "src/assets/img/equipes/nissan/nissan.jpg",
-  ];
+);
+
+// Localiza a imagem pelo caminho do JSON
+const obterImagem = (caminho) => {
+  const caminhoRelativo = caminho.replace(
+    "src/assets/img/equipes/",
+    ""
+  );
+
+  const caminhoProcurado =
+    `../assets/img/equipes/${caminhoRelativo}`.toLowerCase();
+
+  const entrada = Object.entries(arquivosImagem).find(
+    ([arquivo]) => arquivo.toLowerCase() === caminhoProcurado
+  );
+
+  if (!entrada) {
+    console.error("Imagem não encontrada:", caminho);
+    return "";
+  }
+
+  return entrada[1];
+};
+
+const Equipes = () => {
+  const equipesComImagens = equipes.map((equipe) => ({
+    ...equipe,
+    imagensProcessadas: equipe.equipeImages
+      .map(obterImagem)
+      .filter(Boolean),
+  }));
+
+  // Mantém as imagens específicas do carrossel original
+  const imagens = [
+    obterImagem("src/assets/img/equipes/ds/ds5.jpg"),
+    obterImagem("src/assets/img/equipes/mahindra/mahindra4.webp"),
+    obterImagem("src/assets/img/equipes/maserati/maserati.jpg"),
+    obterImagem("src/assets/img/equipes/mclaren/mclaren.jpg"),
+    obterImagem("src/assets/img/equipes/nissan/nissan.jpg"),
+  ].filter(Boolean);
 
   return (
     <EquipesStyle>
@@ -26,28 +63,33 @@ const Equipes = () => {
 
       <section id="card-wrapper">
         <div className="box-area">
-          {equipes.map((equipe, index) => {
-            const { nameEquipe, descricao, equipeId, equipeImages } = equipe;
+          {equipesComImagens.map((equipe) => {
+            const {
+              nameEquipe,
+              descricao,
+              equipeId,
+              imagensProcessadas,
+            } = equipe;
+
+            // Imagem principal original do card
+            const imagemPrincipal = obterImagem(
+              `src/assets/img/equipes/${equipeId}/${equipeId}.jpg`
+            );
+
             return (
-              <div className="box" key={nameEquipe}>
+              <div className="box" key={equipeId}>
                 <img
-                  src={`src/assets/img/equipes/${equipeId}/${equipeId}.jpg`}
+                  src={imagemPrincipal}
                   id="card-img"
+                  alt={`Equipe ${nameEquipe}`}
                 />
 
-                <div className="texto">
-                  <h3>{nameEquipe}</h3>
-                  <button className="openPopupBtn">
-                    Saiba mais sobre a equipe {nameEquipe}
-                  </button>
-
-                  <ModalEquipes
-                    nameEquipe={nameEquipe}
-                    descricao={descricao}
-                    initialIsOpen={false}
-                    equipeImages={equipeImages}
-                  />
-                </div>
+                <ModalEquipes
+                  nameEquipe={nameEquipe}
+                  descricao={descricao}
+                  initialIsOpen={false}
+                  equipeImages={imagensProcessadas}
+                />
               </div>
             );
           })}
