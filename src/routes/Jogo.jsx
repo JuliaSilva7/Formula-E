@@ -148,11 +148,11 @@ const Jogo = () => {
   // useEffect para buscar os usuários na API
   useEffect(() => {
     if (isCadastro && id) {
-      fetch(`http://localhost:5000/usuarios/${id}`)
+      fetch(`https://formula-e-api.onrender.com/usuarios/${id}`)
         .then((res) => res.json())
         .then((data) => setNovoUsuario(data));
     } else {
-      fetch("http://localhost:5000/usuarios/")
+      fetch("https://formula-e-api.onrender.com/usuarios/")
         .then((res) => res.json())
         .then((res) => {
           console.log("Usuários carregados:", res); // Verificação de debug
@@ -184,7 +184,7 @@ const Jogo = () => {
     // Se todas as validações forem bem-sucedidas, continuar com o envio
     let metodo = id ? "put" : "post";
 
-    fetch(`http://localhost:5000/usuarios/${id ? id : ""}`, {
+    fetch(`https://formula-e-api.onrender.com/usuarios/${id ? id : ""}`, {
       method: metodo,
       headers: {
         "Content-Type": "application/json",
@@ -255,7 +255,7 @@ const Jogo = () => {
     const usuarioLogado = sessionStorage.getItem("usuario"); // Obtenha o nome ou id do usuário logado
     
     // Busca o usuário existente pelo nome (ou ID) e atualiza os dados
-    fetch(`http://localhost:5000/usuarios?usuario=${usuarioLogado}`)
+    fetch(`https://formula-e-api.onrender.com/usuarios?usuario=${usuarioLogado}`)
       .then((res) => res.json())
       .then((usuarios) => {
         if (usuarios.length > 0) {
@@ -268,7 +268,7 @@ const Jogo = () => {
           };
   
           // Envia a requisição PUT para atualizar o usuário existente
-          fetch(`http://localhost:5000/usuarios/${usuarioExistente.id}`, {
+          fetch(`https://formula-e-api.onrender.com/usuarios/${usuarioExistente.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
