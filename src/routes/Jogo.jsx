@@ -3,38 +3,60 @@ import { useNavigate, useParams } from "react-router-dom";
 import { JogoStyle } from "../css/JogoStyle";
 import { Link } from "react-router-dom";
 
+// O Vite precisa processar as imagens de src/assets durante o build.
+// O glob também permite localizar os arquivos sem depender de URLs /src/...
+const arquivosImagem = import.meta.glob("../assets/img/**/*", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const obterImagem = (caminho) => {
+  const caminhoProcurado = `../assets/img/${caminho}`.toLowerCase();
+  const entrada = Object.entries(arquivosImagem).find(
+    ([arquivo]) => arquivo.toLowerCase() === caminhoProcurado
+  );
+
+  if (!entrada) {
+    console.error(`Imagem não encontrada: ${caminho}`);
+    return "";
+  }
+
+  return entrada[1];
+};
+
 // Pilotos disponíveis para seleção, agora com imagens
 const pilotos = [
-  { id: 1, nome: "Buemi", imagem: "src/assets/img/pilotos/buemi.png" },
-  { id: 2, nome: "Dacosta", imagem: "src/assets/img/pilotos/dacosta.png" },
-  { id: 3, nome: "Dennis", imagem: "src/assets/img/pilotos/dennis.png" },
-  { id: 4, nome: "Digrassi", imagem: "src/assets/img/pilotos/digrassi.png" },
-  { id: 5, nome: "Fenestraz", imagem: "src/assets/img/pilotos/fenestraz.png" },
-  { id: 6, nome: "Frijns", imagem: "src/assets/img/pilotos/frijns.png" },
-  { id: 7, nome: "Gunther", imagem: "src/assets/img/pilotos/gunther.png" },
-  { id: 8, nome: "Hughes", imagem: "src/assets/img/pilotos/hughes.png" },
-  { id: 9, nome: "Lotterer", imagem: "src/assets/img/pilotos/lotterer2.png" },
-  { id: 10, nome: "Evans", imagem: "src/assets/img/pilotos/mitch-evans.png" },
-  { id: 11, nome: "Mortara", imagem: "src/assets/img/pilotos/mortara.png" },
-  { id: 12, nome: "Muller", imagem: "src/assets/img/pilotos/muller.png" },
-  { id: 13, nome: "Nato", imagem: "src/assets/img/pilotos/nato.png" },
+  { id: 1, nome: "Buemi", imagem: obterImagem("pilotos/buemi.png") },
+  { id: 2, nome: "Dacosta", imagem: obterImagem("pilotos/dacosta.png") },
+  { id: 3, nome: "Dennis", imagem: obterImagem("pilotos/dennis.png") },
+  { id: 4, nome: "Digrassi", imagem: obterImagem("pilotos/digrassi.png") },
+  { id: 5, nome: "Fenestraz", imagem: obterImagem("pilotos/fenestraz.png") },
+  { id: 6, nome: "Frijns", imagem: obterImagem("pilotos/frijns.png") },
+  { id: 7, nome: "Gunther", imagem: obterImagem("pilotos/gunther.png") },
+  { id: 8, nome: "Hughes", imagem: obterImagem("pilotos/hughes.png") },
+  { id: 9, nome: "Lotterer", imagem: obterImagem("pilotos/lotterer2.png") },
+  { id: 10, nome: "Evans", imagem: obterImagem("pilotos/mitch-evans.png") },
+  { id: 11, nome: "Mortara", imagem: obterImagem("pilotos/mortara.png") },
+  { id: 12, nome: "Muller", imagem: obterImagem("pilotos/muller.png") },
+  { id: 13, nome: "Nato", imagem: obterImagem("pilotos/nato.png") },
   {
     id: 14,
     nome: "Cassidy",
-    imagem: "src/assets/img/pilotos/nick-cassidy.png",
+    imagem: obterImagem("pilotos/nick-cassidy.png"),
   },
-  { id: 15, nome: "Rast", imagem: "src/assets/img/pilotos/rast2.png" },
-  { id: 16, nome: "Rowland", imagem: "src/assets/img/pilotos/rowland.png" },
-  { id: 17, nome: "Sam Bird", imagem: "src/assets/img/pilotos/sam-bird.png" },
+  { id: 15, nome: "Rast", imagem: obterImagem("pilotos/rast2.png") },
+  { id: 16, nome: "Rowland", imagem: obterImagem("pilotos/rowland.png") },
+  { id: 17, nome: "Sam Bird", imagem: obterImagem("pilotos/sam-bird.png") },
   {
     id: 18,
     nome: "Sette-Câmara",
-    imagem: "src/assets/img/pilotos/sette-camara.png",
+    imagem: obterImagem("pilotos/sette-camara.png"),
   },
-  { id: 19, nome: "Ticktum", imagem: "src/assets/img/pilotos/ticktum.png" },
-  { id: 20, nome: "Vandoorne", imagem: "src/assets/img/pilotos/vandoorne.png" },
-  { id: 21, nome: "Vergne", imagem: "src/assets/img/pilotos/vergne.png" },
-  { id: 22, nome: "Wehrlein", imagem: "src/assets/img/pilotos/wehrlein.png" },
+  { id: 19, nome: "Ticktum", imagem: obterImagem("pilotos/ticktum.png") },
+  { id: 20, nome: "Vandoorne", imagem: obterImagem("pilotos/vandoorne.png") },
+  { id: 21, nome: "Vergne", imagem: obterImagem("pilotos/vergne.png") },
+  { id: 22, nome: "Wehrlein", imagem: obterImagem("pilotos/wehrlein.png") },
 ];
 
 // Adicionando imagens às equipes
@@ -42,53 +64,53 @@ const equipes = [
   {
     id: 1,
     nome: "Andretti",
-    imagem: "src/assets/img/equipes/andretti/andretti.jpg",
+    imagem: obterImagem("equipes/andretti/andretti.jpg"),
   },
   {
     id: 2,
     nome: "Cupra",
-    imagem: "src/assets/img/equipes/cupra/cupra.jpg",
+    imagem: obterImagem("equipes/cupra/cupra.jpg"),
   },
-  { id: 3, nome: "DSPenske", imagem: "src/assets/img/equipes/ds/ds.jpg" },
+  { id: 3, nome: "DSPenske", imagem: obterImagem("equipes/ds/ds.jpg") },
   {
     id: 4,
     nome: "ERT",
-    imagem: "src/assets/img/equipes/ert/ert.jpg",
+    imagem: obterImagem("equipes/ert/ert.jpg"),
   },
   {
     id: 5,
     nome: "Jaguar TCS Racing",
-    imagem: "src/assets/img/equipes/jaguar/jaguar.jpg",
+    imagem: obterImagem("equipes/jaguar/jaguar.jpg"),
   },
   {
     id: 6,
     nome: "Nissan",
-    imagem: "src/assets/img/equipes/nissan/nissan.jpg",
+    imagem: obterImagem("equipes/nissan/nissan.jpg"),
   },
   {
     id: 7,
     nome: "Maserati MSG Racing",
-    imagem: "src/assets/img/equipes/maserati/maserati.jpg",
+    imagem: obterImagem("equipes/maserati/maserati.jpg"),
   },
   {
     id: 8,
     nome: "Mahindra Racing",
-    imagem: "src/assets/img/equipes/mahindra/mahindra.jpg",
+    imagem: obterImagem("equipes/mahindra/mahindra.jpg"),
   },
   {
     id: 9,
     nome: "Porsche",
-    imagem: "src/assets/img/equipes/porsche/porsche.jpg",
+    imagem: obterImagem("equipes/porsche/porsche.jpg"),
   },
   {
     id: 10,
     nome: "Envision Racing",
-    imagem: "src/assets/img/equipes/envision/envision.jpg",
+    imagem: obterImagem("equipes/envision/envision.jpg"),
   },
   {
     id: 11,
     nome: "McLaren",
-    imagem: "src/assets/img/equipes/mclaren/mclaren.jpg",
+    imagem: obterImagem("equipes/mclaren/mclaren.jpg"),
   },
 ];
 
