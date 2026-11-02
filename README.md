@@ -40,20 +40,20 @@ Acesse a aplicação e monte sua equipe para participar do desafio!
 
 ### Pré-requisitos
 
-- [Node.js](https://nodejs.org/)
+- Node.js
 - npm (instalado junto com o Node.js)
 - Git
 
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/MindSyncc/Site_Challenge2.git
+git clone https://github.com/JuliaSilva7/Formula-E.git
 ```
 
 ### 2. Acesse a pasta do projeto
 
 ```bash
-cd e_masters_site
+cd Formula-E
 ```
 
 ### 3. Instale as dependências
@@ -61,6 +61,41 @@ cd e_masters_site
 ```bash
 npm install
 ```
+
+### 4. Inicie o servidor da API local
+
+Abra um terminal e execute:
+
+```bash
+npm run backend
+```
+
+O JSON Server ficará disponível em:
+
+```text
+http://localhost:5000
+```
+
+### 5. Inicie o frontend
+
+Abra um segundo terminal, na pasta do projeto, e execute:
+
+```bash
+npm run dev
+```
+
+O Vite disponibilizará a aplicação em:
+
+```text
+http://localhost:5173
+```
+
+### Observações
+
+- O frontend e a API precisam estar em execução simultaneamente para utilizar o ambiente local completo.
+- A API local utiliza o arquivo `dados.json` como fonte de dados.
+- A aplicação publicada utiliza a API hospedada no Render.
+- Para encerrar os servidores, utilize `Ctrl + C` nos respectivos terminais.
 
 ### 4. Inicie o servidor de desenvolvimento
 
