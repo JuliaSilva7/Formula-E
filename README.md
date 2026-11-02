@@ -1,5 +1,8 @@
 # 🏎️ E-Masters — Jogo de Fórmula E
 
+https://github.com/user-attachments/assets/e246ea06-8906-4b43-888f-ea22694700b3
+
+
 O **E-Masters** é um jogo interativo inspirado no Campeonato Mundial de Fórmula E, no qual os participantes montam suas próprias equipes e fazem previsões sobre o desempenho dos pilotos e das equipes durante as corridas.
 
 O objetivo é acumular pontos por meio de previsões sobre posições finais, pilotos no Top 10, vencedores, voltas mais rápidas e ultrapassagens, considerando duas etapas: **Corrida Principal** e **Corrida Classificatória**.
